@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" packageUris="http://schema.mathworks.com/mf0/slsa_mm/R2020a">
+  <slsa.mm.MaskTree type="slsa.mm.MaskTree" uuid="f88f223b-1ce3-4b99-aacb-9c692fbd13bb">
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="2b3ead02-2f20-4cd6-b2ba-7a6884e0edc6">
+      <blockPath>FSK/receptor /Gaussian Noise Generator</blockPath>
+      <id>FSK:136</id>
+      <masks type="slsa.mm.Mask" uuid="e1378450-abed-425d-b117-c443ff0d1876">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="16055c12-f908-4e94-a99f-dce19176a8ae">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>m</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="ee70efa2-02dd-4ed6-9a95-51d4d02c68a6">
+          <expression>Pot_ruido</expression>
+          <isTunable>true</isTunable>
+          <name>d</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b523594d-1b3c-4320-a46c-b649888d967c">
+          <expression>41</expression>
+          <isTunable>true</isTunable>
+          <name>s</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="e5782142-2d38-4f65-979b-aba4b781df8f">
+          <expression>1e-9</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="8a74bc57-c0cf-4c15-bd20-c49b6ac7145f">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>frameBased</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0e889c71-d979-4e5a-bb30-3adecfb9ebbf">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>orient</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="7f928971-411d-4543-b3fd-232b2e3de7fe">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>outDataType</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if isnumeric(d) &amp; isequal(size(d),[1,1]), 
+    d=d*ones(1,max(length(m),length(s)));
+end
+if(frameBased &amp; sampPerFrame &gt; 1),
+    buffic=commblkgaussiansrc2(gcb,&apos;UpdateIc&apos;,{m,d,s,sampPerFrame}); 
+end;
+[m,d,s,eStr] = commblkgaussiansrc2(gcb,&apos;init&apos;,{m,d,s,sampPerFrame});
+if(eStr.ecode==1)
+    error(eStr.eID, eStr.emsg);
+end;</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="24422d95-1793-4d4c-bf36-7f9c2ee6f8fe">
+          <name>Pot_ruido</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="fa67f75f-a8fc-4d44-a695-6a3513d8e998">
+      <blockPath>FSK/Transmisor/Continuous-Time VCO</blockPath>
+      <childrenIds>FSK:147:41</childrenIds>
+      <id>FSK:147</id>
+      <masks type="slsa.mm.Mask" uuid="020adeaf-ff93-4c24-aa57-61538265a21f">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5839f186-ae6f-4f1b-8eed-7b1880e87f52">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>Ac</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="a5e88022-28d8-470e-9b68-73f23e036bb1">
+          <expression>Frec2</expression>
+          <isTunable>true</isTunable>
+          <name>Fc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="d143a43f-937f-469f-947b-628cbe4ebedc">
+          <expression>Rb/2</expression>
+          <isTunable>true</isTunable>
+          <name>Kc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="40bdc361-26be-4bdd-b1a7-22b308b9e416">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ph</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if ((length(Ac)~=1) || (length(Fc)~=1) || (length(Ph)~=1) || (length(Kc)~=1) )
+    error(&apos;commblks:ContTimeVCO:InvalidMaskParams&apos;,...
+          &apos;Mask parameters must be scalar values.&apos;);
+end;
+pi2=2*pi;</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="334240d2-4cd6-4fcd-ada2-716f56907cba">
+          <name>Frec2</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="32237604-37b0-48d9-b88a-53674fa65438">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="031dac06-3323-48eb-8b99-73d4ce826935">
+      <blockPath>FSK/Transmisor/Continuous-Time VCO/Check Signal Attributes</blockPath>
+      <id>FSK:147:41</id>
+      <masks type="slsa.mm.Mask" uuid="118d0ee2-1048-429e-b2aa-6c685ec3cc43">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="4628648f-e62e-480f-b170-f542bd46645b">
+          <expression>1</expression>
+          <name>SigAttribCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="cf5c0760-c82f-4318-ab19-932329703ac0">
+          <expression>1</expression>
+          <name>Complexity</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5a5509f0-d7a2-4e5d-bd78-6e6d5a39e5c5">
+          <expression>2</expression>
+          <name>DimsCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5878656e-1162-4706-a13d-adaede73615a">
+          <expression>3</expression>
+          <name>Dimensions</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="e2cbd667-9fa6-4c9b-bd97-601af84a036d">
+          <expression>2</expression>
+          <name>DatatypeCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="8784f990-45c0-4e01-9bdf-89a9167036c9">
+          <expression>3</expression>
+          <name>DatatypeGeneral</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="58c071b1-9f63-4b1e-9089-be1764634823">
+          <expression>2</expression>
+          <name>DtypeFloatSpecific</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="66b3ddf8-d742-4c89-a3f6-edb272db5ab8">
+          <expression>1</expression>
+          <name>SampleMode</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:147</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="a156f076-ddcf-46f0-886f-fe25ac2d491f">
+      <blockPath>FSK/Filtro</blockPath>
+      <id>FSK:15</id>
+      <masks type="slsa.mm.Mask" uuid="125ec483-a617-460e-9dd9-8858ecd9f221">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="57aa948a-3118-44dd-9020-59c79940a49c">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>method</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="cb240902-eacd-4b7e-bcee-2f03405bc884">
+          <expression>3</expression>
+          <isTunable>true</isTunable>
+          <name>filttype</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="4c0bb769-cb32-4cce-8fcc-950ccefa810f">
+          <expression>2</expression>
+          <name>N</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="7d1471b2-babe-4a0f-9397-956f65436fa5">
+          <expression>2*pi*(Frec2-Rb)</expression>
+          <isTunable>true</isTunable>
+          <name>Wlo</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b80494b7-fbfd-477e-8973-0bb6295ef979">
+          <expression>2*pi*(Frec1+Rb)</expression>
+          <isTunable>true</isTunable>
+          <name>Whi</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>[a,b,c,d,str]=dspblkanalog(&apos;design&apos;, method,filttype,N,Wlo,Whi,Rp,Rs);
+</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="96a072d6-fcfe-4718-b7ee-401a7abd078d">
+          <name>Frec2</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="d9fb9447-6c62-437b-9dd5-97fec1daf882">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="6410b471-f234-4192-910e-a04a5afa28fa">
+          <name>Frec1</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="51bb8583-4207-4a1f-9e1a-0f9bc1c728ab">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="2b8ff747-652b-471c-9ce9-59ed76abe9fb">
+      <blockPath>FSK/canal /Gaussian Noise Generator</blockPath>
+      <id>FSK:154</id>
+      <masks type="slsa.mm.Mask" uuid="4e42ca02-76a1-40b8-9281-5b8d58e1b74a">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5e612b85-025e-4b83-9340-5eb3051fa1b7">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>m</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5838d4ed-8a23-4c99-ba9b-5eda11186bb7">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>d</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b841b4cd-24f3-4a8f-a201-2a0ed1b37906">
+          <expression>41</expression>
+          <isTunable>true</isTunable>
+          <name>s</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="49995875-02d3-4fe2-a280-7d81908f74a4">
+          <expression>1e-9</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="d770dfac-49d4-4c5a-91af-187fd4a1f530">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>frameBased</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="82144983-3d80-4205-8e79-515068a59c3f">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>orient</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="17c67fb3-cfe2-4cb2-aee5-06d9bb45847e">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>outDataType</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if isnumeric(d) &amp; isequal(size(d),[1,1]), 
+    d=d*ones(1,max(length(m),length(s)));
+end
+if(frameBased &amp; sampPerFrame &gt; 1),
+    buffic=commblkgaussiansrc2(gcb,&apos;UpdateIc&apos;,{m,d,s,sampPerFrame}); 
+end;
+[m,d,s,eStr] = commblkgaussiansrc2(gcb,&apos;init&apos;,{m,d,s,sampPerFrame});
+if(eStr.ecode==1)
+    error(eStr.eID, eStr.emsg);
+end;</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="c81e97ff-c812-45d0-b5cc-64a0e0732911">
+      <blockPath>FSK/receptor /Filtro</blockPath>
+      <id>FSK:272</id>
+      <masks type="slsa.mm.Mask" uuid="894bc9f1-e4f9-4f67-a1a3-ec31b7019cac">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="811f4a98-aff9-4a9b-b2f0-ca7cc69fba33">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>method</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c23c78b7-3ad0-4d47-b181-7a07e3f8fc1b">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>filttype</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="7d2bdaf5-bf81-4653-a5d1-e48f7a60d9b3">
+          <expression>6</expression>
+          <name>N</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="9ba70619-d6ac-4426-b480-aaaed037d843">
+          <expression>2*pi*Rb</expression>
+          <isTunable>true</isTunable>
+          <name>Wlo</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>[a,b,c,d,str]=dspblkanalog(&apos;design&apos;, method,filttype,N,Wlo,Whi,Rp,Rs);
+</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="b8efb770-b122-407e-b108-ea997746784a">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="624c15a5-24eb-4776-8ae7-016272466d58">
+      <blockPath>FSK/receptor /Reloj/Continuous-Time VCO</blockPath>
+      <childrenIds>FSK:338:41</childrenIds>
+      <id>FSK:338</id>
+      <masks type="slsa.mm.Mask" uuid="c63263ee-382c-457f-a344-c00addb727a0">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="94175033-94a7-439f-837e-f79457f8c9c6">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>Ac</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c499f9ef-9aa3-45af-a938-fa2f1fd4345b">
+          <expression>Rb/2</expression>
+          <isTunable>true</isTunable>
+          <name>Fc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="dd45cb0c-4b6b-44f2-a93f-0d6b22ca57d7">
+          <expression>kv2</expression>
+          <isTunable>true</isTunable>
+          <name>Kc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="f143e506-984c-4d81-8ab6-12402f2d3c03">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ph</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if ((length(Ac)~=1) || (length(Fc)~=1) || (length(Ph)~=1) || (length(Kc)~=1) )
+    error(&apos;commblks:ContTimeVCO:InvalidMaskParams&apos;,...
+          &apos;Mask parameters must be scalar values.&apos;);
+end;
+pi2=2*pi;</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="595a4a1d-0ab5-4540-9712-cbd693cc80d1">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="330ec7bc-6691-4dff-8556-62a001e5101e">
+          <name>kv2</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="45c701b4-0c09-4d29-9267-e57a26e96d7f">
+      <blockPath>FSK/receptor /Reloj/Continuous-Time VCO/Check Signal Attributes</blockPath>
+      <id>FSK:338:41</id>
+      <masks type="slsa.mm.Mask" uuid="b10b17a5-b1c8-4b2c-84c2-48c9389d1bc5">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="3ea33b3a-089e-4e49-9555-1fa2890c850f">
+          <expression>1</expression>
+          <name>SigAttribCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c098432f-1313-485f-b2ab-6af939f1a243">
+          <expression>1</expression>
+          <name>Complexity</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="40a7f750-23e1-4451-b699-1cf35182713c">
+          <expression>2</expression>
+          <name>DimsCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b6fb67ea-ebc8-4b90-be91-7659ed2c5fe2">
+          <expression>3</expression>
+          <name>Dimensions</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="1b4c2951-dfcf-4fc4-9921-6e21ea23cac1">
+          <expression>2</expression>
+          <name>DatatypeCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0e50f77b-d236-4208-8443-3185b8b32a9d">
+          <expression>3</expression>
+          <name>DatatypeGeneral</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="3b5cf55d-fb34-467b-8048-b26de0ddb65a">
+          <expression>2</expression>
+          <name>DtypeFloatSpecific</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="48f16ba6-d38b-4ede-b97b-610637e3980d">
+          <expression>1</expression>
+          <name>SampleMode</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:338</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="73117267-cd47-4e1f-b1f2-57b0bd4f0046">
+      <blockPath>FSK/receptor /Reloj/Monostable</blockPath>
+      <childrenIds>FSK:341:27:455</childrenIds>
+      <id>FSK:341</id>
+      <masks type="slsa.mm.Mask" uuid="902e1f75-402e-4f3f-9163-951cf4143a85">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="83efbfe9-04a0-424f-af69-726f0e53d305">
+          <expression>3</expression>
+          <isTunable>true</isTunable>
+          <name>EdgeDetect</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="38b1d722-c7dc-47ac-bbdc-a06ca4414150">
+          <expression>0.9/Rb</expression>
+          <isTunable>true</isTunable>
+          <name>PulseDuration</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="1b93bf28-8ed9-456e-91db-2c2a75f5b7d1">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="e00b56cd-8c02-4d8e-9da8-da4262cd0a9c">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block=gcb;
+[WantBlockChoice,Ts,sps,model] = powericon(&apos;MonostableInit&apos;,block,EdgeDetect,PulseDuration,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="1d62f5c6-6e80-4469-bce0-e0d9f745e248">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="1cb8b2cd-59e1-4620-8cd4-d8536cec9adf">
+      <blockPath>FSK/receptor /Reloj/Monostable/Model/Sample and Hold</blockPath>
+      <id>FSK:341:27:455</id>
+      <masks type="slsa.mm.Mask" uuid="c6736cbb-6030-4eb8-867f-3fb9517947e5">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="76d2877f-2fd4-490d-97c6-47a9e7ef9a00">
+          <expression>-1e6</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="ad3d7c04-8db8-45f1-9166-a91603d424d6">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block = gcb;
+[WantBlockChoice,Ts] = powericon(&apos;SampleAndHoldInit&apos;,block,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:341</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="1900b031-1f6b-4b03-a2fa-e2e0661133ab">
+      <blockPath>FSK/receptor /Reloj/Monostable1</blockPath>
+      <childrenIds>FSK:342:27:455</childrenIds>
+      <id>FSK:342</id>
+      <masks type="slsa.mm.Mask" uuid="a8ed9325-3a56-470a-9a3e-c3f7a45106e8">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c050e57e-4c98-44b1-8acc-fadafc23413f">
+          <expression>3</expression>
+          <isTunable>true</isTunable>
+          <name>EdgeDetect</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="9a784b54-3f21-4b7b-9004-f35c17f283be">
+          <expression>0.1/Rb</expression>
+          <isTunable>true</isTunable>
+          <name>PulseDuration</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="40813f45-8f6a-402e-8f6b-afca4d8a51eb">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="8e5cd30e-1612-49cf-8ece-492dd67e8979">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block=gcb;
+[WantBlockChoice,Ts,sps,model] = powericon(&apos;MonostableInit&apos;,block,EdgeDetect,PulseDuration,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="998c4d27-da6a-4f77-ac9b-adcdbaa2e8da">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="06c8bcdb-cb5b-47b2-a6d9-ecbd83a52279">
+      <blockPath>FSK/receptor /Reloj/Monostable1/Model/Sample and Hold</blockPath>
+      <id>FSK:342:27:455</id>
+      <masks type="slsa.mm.Mask" uuid="f5e232d7-4bdf-4385-9b4e-6d81dd6927ba">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="e59f7148-bd0c-40df-9bf3-e9b93360edf2">
+          <expression>-1e6</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="a77a870f-5531-40a1-bd40-2f48916cdb3e">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block = gcb;
+[WantBlockChoice,Ts] = powericon(&apos;SampleAndHoldInit&apos;,block,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:342</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="96143aac-e78e-406d-8138-c4bdb381479e">
+      <blockPath>FSK/receptor /Reloj/Sample and Hold</blockPath>
+      <id>FSK:344</id>
+      <masks type="slsa.mm.Mask" uuid="bcd7d217-5c03-48a8-af1e-92d84f718ea9">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="9e2e42d5-71f0-4f0e-8801-9f50e92d9249">
+          <expression>2</expression>
+          <name>trig</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b1fce693-6ebb-4539-91f8-cc36f4c51624">
+          <expression>0</expression>
+          <name>initCond</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="35784a65-272d-40fc-9487-af1b0679bf4b">
+          <expression>0</expression>
+          <name>latchinput</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>switch trig
+case 1, s=&apos;rising&apos;;
+case 2, s=&apos;falling&apos;;
+case 3, s=&apos;either&apos;;
+end
+set_param([gcb &apos;/Trigger&apos;],&apos;triggertype&apos;,s);
+if (latchinput == 1)
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;on&apos;);
+else
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;off&apos;);
+end
+</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="6d734841-a190-4fff-9e06-548436c53abe">
+      <blockPath>FSK/receptor /Reloj/Sample and Hold1</blockPath>
+      <id>FSK:345</id>
+      <masks type="slsa.mm.Mask" uuid="eaa4b949-751f-4ffe-bf1a-c1cf6bd4c4c7">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="817ffab6-e50c-484d-a67e-2f13d72b2e3a">
+          <expression>3</expression>
+          <name>trig</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="42f90eac-169f-4334-ba17-9250259da7dc">
+          <expression>0</expression>
+          <name>initCond</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="dc8d7e36-cce4-4494-ad04-08da0b51f476">
+          <expression>0</expression>
+          <name>latchinput</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>switch trig
+case 1, s=&apos;rising&apos;;
+case 2, s=&apos;falling&apos;;
+case 3, s=&apos;either&apos;;
+end
+set_param([gcb &apos;/Trigger&apos;],&apos;triggertype&apos;,s);
+if (latchinput == 1)
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;on&apos;);
+else
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;off&apos;);
+end
+</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="3b618909-4d56-4962-9b28-2fa90a7250f1">
+      <blockPath>FSK/receptor /Compare To Constant</blockPath>
+      <id>FSK:379</id>
+      <masks type="slsa.mm.Mask" uuid="95164454-6acb-42ed-a299-c8ed0a6b3629">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b798baff-ef8b-4859-a9e2-0a8e0adf30fd">
+          <expression>5</expression>
+          <name>relop</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="34ce3c79-d434-4f47-b390-bf3797535bca">
+          <expression>2.4e-6</expression>
+          <isTunable>true</isTunable>
+          <name>const</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="9fbf4710-974e-4e59-a8ac-d4f4de4fb457">
+          <expression>2</expression>
+          <name>OutDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b5232818-7e94-456c-be94-b1f60cd17503">
+          <expression>1</expression>
+          <name>ZeroCross</name>
+        </dialogParameters>
+        <initializationCode>blkName = gcb;
+
+if strcmp(get_param(gcbh,&apos;OutDataTypeStr&apos;),&apos;boolean&apos;)
+	setValue = &apos;boolean&apos;;
+else
+	setValue = &apos;fixdt(0, 8)&apos;;
+end
+
+set_param([blkName,&apos;/Compare&apos;],&apos;relop&apos;,relop, ...
+	&apos;OutDataTypeStr&apos;, setValue, &apos;ZeroCross&apos;, ZeroCross);
+
+str = [relop,&apos; C&apos;]; %default
+
+const_str = get_param(blkName, &apos;const&apos;);
+const_val = str2num(const_str);
+
+if isempty(const_val) %#ok&lt;ST2NM&gt;
+    %Expression/Variable
+    str = [relop, &apos; &apos;, strtrim(const_str)];
+else
+    if length(const_val) == 1 
+        if Simulink.data.isSupportedEnumClass(class(const_val))
+            % Special Handling for Enumerations
+            if Simulink.data.getEnumTypeInfo(class(const_val), &apos;AddClassNameToEnumNames&apos;)
+                str = [relop, &apos; &apos;, strtrim(const_str)];
+            else
+                str = [relop, &apos; &apos;, char(const_val)];
+            end
+        elseif(isfloat(const_val) || isinteger(const_val) || islogical(const_val)) 
+                str = [relop, &apos; &apos;, num2str(const_val)];
+        end
+    end
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="5b0d7127-96bb-403f-a45c-43399336f22e">
+      <blockPath>FSK/receptor /Sample and Hold</blockPath>
+      <id>FSK:381</id>
+      <masks type="slsa.mm.Mask" uuid="a20f2c8a-ba95-4dbc-96f5-e0cd1f38df21">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="f13a302e-5009-48a4-b687-f08772de2360">
+          <expression>3</expression>
+          <name>trig</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5153df50-b41a-4d80-a8c0-8a58c2b35518">
+          <expression>0</expression>
+          <name>initCond</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="af66daf6-2cdd-4b5f-85bb-c8febae5c9f6">
+          <expression>0</expression>
+          <name>latchinput</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>switch trig
+case 1, s=&apos;rising&apos;;
+case 2, s=&apos;falling&apos;;
+case 3, s=&apos;either&apos;;
+end
+set_param([gcb &apos;/Trigger&apos;],&apos;triggertype&apos;,s);
+if (latchinput == 1)
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;on&apos;);
+else
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;off&apos;);
+end
+</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="e52df60c-33b7-4dfa-a459-aa2e53d379b8">
+      <blockPath>FSK/receptor /Sincronismo /Monostable1</blockPath>
+      <childrenIds>FSK:444:27:455</childrenIds>
+      <id>FSK:444</id>
+      <masks type="slsa.mm.Mask" uuid="4b5fb7fe-201b-40dd-ac99-e5d3bdc0f567">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="b82232a1-f68f-4a21-9ac9-7382b12b29c6">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>EdgeDetect</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5e3a2e88-f9ae-4d9a-8b38-a2d6dffc1161">
+          <expression>(Datos+0)/Rb</expression>
+          <isTunable>true</isTunable>
+          <name>PulseDuration</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="a644b8e7-ab2e-4884-a582-f0429289b6c2">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0657fe69-11ca-46d7-92e5-46d77aa1d3cc">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block=gcb;
+[WantBlockChoice,Ts,sps,model] = powericon(&apos;MonostableInit&apos;,block,EdgeDetect,PulseDuration,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="a3173c22-84e2-42be-b78f-ec775cc20c8b">
+          <name>Datos</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="d49679d1-c823-4d50-b537-793f08159af7">
+          <name>Rb</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="0b09bb67-c88a-4121-934e-9302edcb0334">
+      <blockPath>FSK/receptor /Sincronismo /Monostable1/Model/Sample and Hold</blockPath>
+      <id>FSK:444:27:455</id>
+      <masks type="slsa.mm.Mask" uuid="460ef6a9-022a-4f92-81be-b7b81f04f4d5">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5b89373f-2006-4d32-846c-cda06e24b9f6">
+          <expression>-1e6</expression>
+          <isTunable>true</isTunable>
+          <name>ic</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="1a52fec5-967b-46da-8813-2956b95a3e9c">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ts</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>block = gcb;
+[WantBlockChoice,Ts] = powericon(&apos;SampleAndHoldInit&apos;,block,ic,Ts);
+powericon(&apos;SetInternalModels&apos;,&apos;set&apos;,block,WantBlockChoice);</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:444</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="79b6c049-24b8-41fe-8bd4-910f7f6530ad">
+      <blockPath>FSK/receptor /Triggered To Workspace</blockPath>
+      <id>FSK:461</id>
+      <masks type="slsa.mm.Mask" uuid="2877c390-8284-4507-9672-951ccd8559a7">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c1772e9d-72c0-48fe-bf4c-95663bb23776">
+          <expression>3</expression>
+          <name>TriggerType</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="f5818a2b-76c4-4f75-8b5b-d63f3a6662e6">
+          <expression>mensajerx</expression>
+          <name>VariableName</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="cbf6da85-a021-42a9-9235-58f80b2c94e0">
+          <expression>1000</expression>
+          <name>Buffer</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="cb42b9a1-5d83-4e05-b6ff-d9068dc3e9c5">
+          <expression>1</expression>
+          <name>Decimation</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="4cc385c4-c798-4433-a2d5-63705ee5b7ec">
+          <expression>1</expression>
+          <name>Save2DMode</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="5b28e307-fcea-4606-b7f1-98f26422278a">
+          <expression>0</expression>
+          <name>FixptAsFi</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>dspblktrigtwks(&apos;init&apos;,TriggerType);</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="0e2726ce-1578-463e-97b5-b8cb5adef170">
+      <blockPath>FSK/medidor de error/Muestreo y Retencion </blockPath>
+      <id>FSK:52</id>
+      <masks type="slsa.mm.Mask" uuid="73d280b2-f07f-48d2-9af6-38c5f74ccf25">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="d06e3fd1-11c7-49f1-bd76-b1119c2a28ff">
+          <expression>1</expression>
+          <name>trig</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="1c33516f-b850-4b7d-bff4-046d3440fa6b">
+          <expression>0</expression>
+          <name>initCond</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="dc8fc5df-cf2b-4020-8ac0-f524b4a4ae74">
+          <expression>0</expression>
+          <name>latchinput</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>switch trig
+case 1, s=&apos;rising&apos;;
+case 2, s=&apos;falling&apos;;
+case 3, s=&apos;either&apos;;
+end
+set_param([gcb &apos;/Trigger&apos;],&apos;triggertype&apos;,s);
+if (latchinput == 1)
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;on&apos;);
+else
+	set_param([gcb &apos;/In&apos;],&apos;latchinput&apos;,&apos;off&apos;);
+end
+</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="2bcaf008-7b5c-4e5d-8a19-3fe730acd53b">
+      <blockPath>FSK/receptor /SinPortadora /Continuous-Time VCO</blockPath>
+      <childrenIds>FSK:74:41</childrenIds>
+      <id>FSK:74</id>
+      <masks type="slsa.mm.Mask" uuid="f67cd933-187b-479a-be3f-09206da9bd24">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c7165c7a-2a64-4b46-b272-7a417d6b1fc4">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>Ac</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0573e193-254c-4bc0-88ab-7020a847923a">
+          <expression>Frec1</expression>
+          <isTunable>true</isTunable>
+          <name>Fc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="a578006d-8cd4-4efb-a71a-c8bd688b0acd">
+          <expression>kv</expression>
+          <isTunable>true</isTunable>
+          <name>Kc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="34adc2df-120a-4707-95f9-feb8940893bd">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ph</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if ((length(Ac)~=1) || (length(Fc)~=1) || (length(Ph)~=1) || (length(Kc)~=1) )
+    error(&apos;commblks:ContTimeVCO:InvalidMaskParams&apos;,...
+          &apos;Mask parameters must be scalar values.&apos;);
+end;
+pi2=2*pi;</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="b4bc4428-d47e-4433-a32b-25a86bfe5ab2">
+          <name>Frec1</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="37052e65-d2ab-4059-ad19-895347630320">
+          <name>kv</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="07122595-d10b-4081-87d0-f6d8530a9322">
+      <blockPath>FSK/receptor /SinPortadora /Continuous-Time VCO/Check Signal Attributes</blockPath>
+      <id>FSK:74:41</id>
+      <masks type="slsa.mm.Mask" uuid="98d4039c-cf34-4629-95a1-b84ffc9ebc16">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="1b45460a-d889-4924-821a-a1874f2c59a8">
+          <expression>1</expression>
+          <name>SigAttribCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="4588d421-6855-4143-8a19-4486e0405c9a">
+          <expression>1</expression>
+          <name>Complexity</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="77373088-0042-482c-9b29-ca41743f0645">
+          <expression>2</expression>
+          <name>DimsCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0a364ad7-ccfd-4c56-a5f9-a43269401a03">
+          <expression>3</expression>
+          <name>Dimensions</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="f5888138-ea7c-4423-abd3-c48c5be0a4bb">
+          <expression>2</expression>
+          <name>DatatypeCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="16131e78-0eb2-48c1-b473-f9f9d1930540">
+          <expression>3</expression>
+          <name>DatatypeGeneral</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="bbe3659d-6f67-4fda-a099-422baebfc97e">
+          <expression>2</expression>
+          <name>DtypeFloatSpecific</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="8ad7b3b5-8266-4453-9492-8e73f702973b">
+          <expression>1</expression>
+          <name>SampleMode</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:74</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="ab3ce7d9-9eb0-42fc-8147-94d8efa2ea5f">
+      <blockPath>FSK/receptor /SinPortadora /Continuous-Time VCO1</blockPath>
+      <childrenIds>FSK:96:41</childrenIds>
+      <id>FSK:96</id>
+      <masks type="slsa.mm.Mask" uuid="f477bed8-6a1e-4816-81c9-0034b4f8726a">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="46a4912c-8515-4470-a6e7-ca2188159002">
+          <expression>1</expression>
+          <isTunable>true</isTunable>
+          <name>Ac</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="54651b76-4278-4379-9a81-511aceb02f39">
+          <expression>Frec2</expression>
+          <isTunable>true</isTunable>
+          <name>Fc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="adfb00ea-09d5-47aa-99dd-a89caa4cb890">
+          <expression>kv</expression>
+          <isTunable>true</isTunable>
+          <name>Kc</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="d74a05ac-dcd3-45a2-8337-51d71dddf81c">
+          <expression>0</expression>
+          <isTunable>true</isTunable>
+          <name>Ph</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <initializationCode>if ((length(Ac)~=1) || (length(Fc)~=1) || (length(Ph)~=1) || (length(Kc)~=1) )
+    error(&apos;commblks:ContTimeVCO:InvalidMaskParams&apos;,...
+          &apos;Mask parameters must be scalar values.&apos;);
+end;
+pi2=2*pi;</initializationCode>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="aae2fb3d-860b-48d6-a2d1-ca715c544250">
+          <name>Frec2</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <referencedGlobalVariableInfo type="slsa.mm.VariableInfo" uuid="6a90ba1b-51c8-4758-8639-636440709de7">
+          <name>kv</name>
+          <workspace>global</workspace>
+        </referencedGlobalVariableInfo>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="bd964ac9-55ee-422f-9e8c-4ef3e571f9e1">
+      <blockPath>FSK/receptor /SinPortadora /Continuous-Time VCO1/Check Signal Attributes</blockPath>
+      <id>FSK:96:41</id>
+      <masks type="slsa.mm.Mask" uuid="26ecf4bb-55f8-4ec9-b1fb-8a17bd36962c">
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="a7f3e43e-6aa7-4a4f-9250-b82641079e2c">
+          <expression>1</expression>
+          <name>SigAttribCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="7fe675d4-c477-4379-905b-324eaf9485de">
+          <expression>1</expression>
+          <name>Complexity</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="32f73276-43b2-43a2-b812-6715efe04665">
+          <expression>2</expression>
+          <name>DimsCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="0cad15ae-b981-484c-af50-bc836f0ce3f6">
+          <expression>3</expression>
+          <name>Dimensions</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="c16460a2-870d-402a-b586-a780fb348e26">
+          <expression>2</expression>
+          <name>DatatypeCheckMethod</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="87f0f9da-ffd9-43c2-b913-f7a9c9688e3f">
+          <expression>3</expression>
+          <name>DatatypeGeneral</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="88f7b6ef-fe9a-46b7-acb8-eb05b178efdd">
+          <expression>2</expression>
+          <name>DtypeFloatSpecific</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.DialogParameterInfo" uuid="de46b063-d7b6-4914-aa56-2ee2e9c3adb8">
+          <expression>1</expression>
+          <name>SampleMode</name>
+          <refersToVariables>true</refersToVariables>
+        </dialogParameters>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>FSK:96</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.MaskedBlock" uuid="32a9c484-af9c-42fe-a2d6-2de1e3501865">
+      <childrenIds>FSK:136</childrenIds>
+      <childrenIds>FSK:147</childrenIds>
+      <childrenIds>FSK:15</childrenIds>
+      <childrenIds>FSK:154</childrenIds>
+      <childrenIds>FSK:272</childrenIds>
+      <childrenIds>FSK:338</childrenIds>
+      <childrenIds>FSK:341</childrenIds>
+      <childrenIds>FSK:342</childrenIds>
+      <childrenIds>FSK:344</childrenIds>
+      <childrenIds>FSK:345</childrenIds>
+      <childrenIds>FSK:379</childrenIds>
+      <childrenIds>FSK:381</childrenIds>
+      <childrenIds>FSK:444</childrenIds>
+      <childrenIds>FSK:461</childrenIds>
+      <childrenIds>FSK:52</childrenIds>
+      <childrenIds>FSK:74</childrenIds>
+      <childrenIds>FSK:96</childrenIds>
+      <id>root</id>
+    </maskedBlocks>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="941f2a22-c9a1-4346-8a97-5a6f8beffd2e">
+      <name>Datos</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAAAAQGNA</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="6293a98f-0d3d-4adc-9a5c-0c12fd11252e">
+      <name>Frec1</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAADZT0NB</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="778d2043-ebc1-423a-af00-ad9cfb719e98">
+      <name>Frec2</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAADH1UJB</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="a004dcf2-d821-4892-a474-2cad83477e65">
+      <name>Pot_ruido</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAANu6hhBC5Jc+</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="a9cae1b5-233f-4273-affe-f3059543d6e2">
+      <name>Rb</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAACAhP5A</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="2f6e92ae-f9e7-46b0-9ff2-ddac9f813ceb">
+      <name>kv</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAKdDug+9LPNA</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+    <referencedGlobalWorkspaceVariables type="slsa.mm.Variable" uuid="2d2a3f53-b053-48be-9170-9ac5879e799a">
+      <name>kv2</name>
+      <value>AAFJTQAAAAAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAKKUGt1B</value>
+      <workspace>global</workspace>
+    </referencedGlobalWorkspaceVariables>
+  </slsa.mm.MaskTree>
+</MF0>
